@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Ulang Tahun ✨</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #fcfbfa;
+            color: #2c2c2c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+            padding: 35px 25px;
+            background: #ffffff;
+            border: 1px solid #eae6e1;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.015);
+            border-radius: 4px;
+        }
+
+        /* Tampilan Amplop */
+        .envelope-section {
+            display: block;
+        }
+
+        .envelope {
+            cursor: pointer;
+            font-size: 3.5rem;
+            margin: 25px 0;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-block;
+        }
+
+        .envelope:hover {
+            transform: scale(1.15);
+        }
+
+        .hint-text {
+            font-size: 0.8rem;
+            color: #8c8c8c;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        /* Tampilan Kartu */
+        .card-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            font-weight: 400;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .date {
+            font-size: 0.8rem;
+            color: #9a9a9a;
+            margin-bottom: 25px;
+            letter-spacing: 0.5px;
+        }
+
+        .photo-space {
+            width: 100%;
+            height: 280px;
+            background-color: #f7f5f2;
+            margin: 20px 0;
+            border-radius: 2px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border: 1px solid #eae6e1;
+        }
+
+        .photo-space img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .message {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #424242;
+            text-align: justify;
+            margin-top: 25px;
+            white-space: pre-line;
+            letter-spacing: -0.2px;
+        }
+
+        .audio-control {
+            margin-top: 35px;
+            font-size: 0.75rem;
+            font-family: inherit;
+            color: #555555;
+            background: none;
+            border: 1px solid #eae6e1;
+            padding: 8px 18px;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.2s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .audio-control:hover {
+            background: #2c2c2c;
+            color: #ffffff;
+            border-color: #2c2c2c;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <!-- Elemen Audio (Ganti source src dengan link audio/instrumental pilihanmu) -->
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- 1. SEBELUM DIBUKA -->
+    <div id="envelopeSection" class="envelope-section">
+        <div class="envelope" onclick="openCard()">✉️</div>
+        <p class="hint-text">Ketuk untuk membuka pesan</p>
+    </div>
+
+    <!-- 2. SETELAH DIBUKA -->
+    <div id="cardSection" class="card-section">
+        <h1>Selamat Ulang Tahun.</h1>
+        <div class="date" id="liveDate"></div>
+
+        <div class="photo-space">
+            <!-- Ganti URL di bawah dengan foto momen atau foto dia -->
+            <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=600" alt="Moment">
+        </div>
+
+        <p class="message">
+            Waktu berjalan cepat, ya? Hari ini hari khusus buat kamu.
+
+            Nggak ada banyak kata yang mau disampaikan, selain doa-doa baik untuk langkah-langkahmu ke depan. Semoga kamu selalu sehat, dikelilingi orang-orang baik, dan menemukan bahagia di setiap hal kecil yang kamu pilih.
+
+            Terima kasih pernah menjadi bagian dari cerita yang mendewasakan. Selamat merayakan hari lahirmu.
+        </p>
+
+        <button class="audio-control" id="musicBtn" onclick="toggleMusic()">🎵 Putar Musik</button>
+    </div>
+</div>
+
+<script>
+    // Set tanggal otomatis bahasa Indonesia
+    const dateElement = document.getElementById('liveDate');
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    dateElement.innerText = new Date().toLocaleDateString('id-ID', options);
+
+    const envelopeSection = document.getElementById('envelopeSection');
+    const cardSection = document.getElementById('cardSection');
+    const music = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicBtn');
+
+    function openCard() {
+        // Sembunyikan amplop
+        envelopeSection.style.display = 'none';
+        
+        // Munculkan kartu dengan transisi halus
+        cardSection.style.display = 'block';
+        setTimeout(() => {
+            cardSection.style.opacity = '1';
+        }, 50);
+
+        // Putar musik otomatis setelah interaksi klik
+        playMusic();
+    }
+
+    function playMusic() {
+        music.play().then(() => {
+            musicBtn.innerText = "⏸ Hentikan Musik";
+        }).catch(err => {
+            console.log("Autoplay diblokir browser, kontrol manual diaktifkan.");
+        });
+    }
+
+    function toggleMusic() {
+        if (music.paused) {
+            music.play();
+            musicBtn.innerText = "⏸ Hentikan Musik";
+        } else {
+            music.pause();
+            musicBtn.innerText = "🎵 Putar Musik";
+        }
+    }
+</script>
+
+</body>
+</html>
